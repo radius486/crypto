@@ -5,6 +5,7 @@
     </select>
     <button @click.prevent='addPair'>+Добавить валютную пару</button>
     <button @click.prevent='getData' class='refresh-button'>Обновить данные</button>
+    <strong v-if='currencyData.error' class='error'>Error: {{ currencyData.error }}</strong>
     <div class='currency-pairs'>
       <template v-for='(pair, index) in pairs'>
         <CurrencyPair
@@ -89,6 +90,8 @@ export default {
       return list;
     },
     pairs() {
+      if (!this.market) { return []; }
+
       const data = [];
 
       this.pairLabels.forEach((Label) => {
@@ -133,5 +136,11 @@ export default {
   min-width: 200px;
 }
 .refresh-button {
+}
+.error {
+  color: #f00;
+  display: block;
+  font-size: 20px;
+  margin-top: 20px;
 }
 </style>

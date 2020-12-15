@@ -4,24 +4,33 @@
       <tr>
         <td>{{ pair.Label }}</td>
         <td></td>
-        <td>{{ pair.Price }}</td>
-        <td class='buy'>Купить</td>
+        <td title='Новый курс'>{{ pair.Price }}</td>
+        <td class='buy'>
+          <button @click.prevent="setMethod('buy')">Купить</button>
+        </td>
       </tr>
       <tr>
         <td :class='pairStatus'>{{ pairStatusText }}</td>
         <td class='course-percent'>{{ coursePercentText }}</td>
-        <td>
+        <td title='Старый курс'>
           <input type='text' v-model='oldPrice'>
         </td>
-        <td class='sell'>Продать</td>
+        <td class='sell'>
+          <button @click.prevent="setMethod('sell')">Продать</button>
+        </td>
       </tr>
       <tr>
         <td></td>
         <td></td>
-        <td></td>
-        <td>
+        <td title='Старое количество'>
           <div class='currency-code'>
-            <input type='text' v-model='quantity'>
+            <input type='text' v-model='oldQuantity'>
+            {{ currencyCode }}
+          </div>
+        </td>
+        <td title='Новое количество'>
+          <div class='currency-code'>
+            <input type='text' v-model='newQuantity'>
             {{ currencyCode }}
           </div>
         </td>
@@ -47,12 +56,39 @@ export default {
   data() {
     return {
       oldPrice: undefined,
-      quantity: undefined,
+      newQuantity: undefined,
+      oldQuantity: undefined,
+      method: undefined,
     };
   },
   computed: {
     pairStatus() {
-      return 'wait';
+      if (this.method === 'buy') {
+        const price = ((this.oldQuantity * this.oldPrice) + (this.newQuantity * this.pair.Price))
+          / (this.oldQuantity + this.newQuantity);
+        console.log(price);
+
+        if (price > this.pair.Price) {
+          return 'buy';
+        }
+
+        return 'wait';
+      }
+
+      if (this.method === 'sell') {
+        const value = this.oldPrice + ((this.pair.Price - this.oldPrice)
+          / (this.newQuantity / this.oldQuantity));
+
+        console.log(value);
+
+        if (value > this.oldPrice) {
+          return 'sell';
+        }
+
+        return 'wait';
+      }
+
+      return '';
     },
     pairStatusText() {
       let text;
@@ -92,6 +128,9 @@ export default {
   methods: {
     deletePair() {
       this.$emit('delete', this.index);
+    },
+    setMethod(method) {
+      this.method = method;
     },
   },
 };

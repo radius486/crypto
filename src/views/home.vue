@@ -41,7 +41,7 @@ export default {
             { Label: 'ZCH/BTC', Name: '0cash', Price: 0.00000003, Volume_24h: 0.00090499, Timestamp: 1607776080 },
             { Label: 'ZCN/BTC', Name: '0chain', Price: 0.00001676, Volume_24h: 15.64889979, Timestamp: 1607776080 },
             { Label: 'ZRX/BTC', Name: '0x', Price: 0.00002098, Volume_24h: 1044.84389557, Timestamp: 1607776080 },
-            { Label: '0XBTC/BTC', Name: '0xbitcoin', Price: 0.00001161, Volume_24h: 0.00000000, Timestamp: 1594143600 },
+            { Label: '0XBTC/BTC', Name: '0xbitcoin', Price: 100, Volume_24h: 0.00000000, Timestamp: 1594143600 },
             { Label: 'ZXC/BTC', Name: '0xcert', Price: 0.00000012, Volume_24h: 0.39683969, Timestamp: 1607776080 },
             { Label: 'TSHP/BTC', Name: '12ships', Price: 0.00000018, Volume_24h: 142.15341960, Timestamp: 1607776080 },
             { Label: '1AI/BTC', Name: '1aitoken', Price: 0.00000001, Volume_24h: 0.00000000, Timestamp: 1604790180 },

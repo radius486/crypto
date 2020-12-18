@@ -6,31 +6,31 @@
         <td></td>
         <td title='Новый курс'>{{ pair.Price }}</td>
         <td class='buy'>
-          <button @click.prevent="setMethod('buy')">Купить</button>
+          <button @click.prevent="openModal('buy')">Купить</button>
         </td>
       </tr>
       <tr>
         <td :class='pairStatus'>{{ pairStatusText }}</td>
         <td class='course-percent'>{{ coursePercentText }}</td>
-        <td title='Старый курс'>
-          <input type='text' v-model='oldPrice'>
+        <td title='Средневзвешенный курс'>
+          <input type='text' v-model='averagePrice'>
         </td>
         <td class='sell'>
-          <button @click.prevent="setMethod('sell')">Продать</button>
+          <button @click.prevent="openModal('sell')">Продать</button>
         </td>
       </tr>
       <tr>
         <td></td>
         <td></td>
-        <td title='Старое количество'>
-          <div class='currency-code'>
-            <input type='text' v-model='oldQuantity'>
-            {{ currencyCode }}
-          </div>
-        </td>
         <td title='Новое количество'>
           <div class='currency-code'>
             <input type='text' v-model='newQuantity'>
+            {{ currencyCode }}
+          </div>
+        </td>
+        <td title='Старое количество'>
+          <div class='currency-code'>
+            <input type='text' v-model='oldQuantity'>
             {{ currencyCode }}
           </div>
         </td>
@@ -55,40 +55,35 @@ export default {
   },
   data() {
     return {
-      oldPrice: undefined,
-      newQuantity: undefined,
-      oldQuantity: undefined,
-      method: undefined,
+      newQuantity: 10,
+      oldQuantity: 20,
     };
   },
   computed: {
+    oldPrice() {
+      return this.pair.Price - (this.pair.Price * 0.1);
+    },
+    averagePrice() {
+      const price = ((this.oldQuantity * this.oldPrice) + (this.newQuantity * this.pair.Price))
+        / (this.oldQuantity + this.newQuantity);
+      console.log(price);
+
+      // const value = this.oldPrice + ((this.pair.Price - this.oldPrice)
+      //   / (this.newQuantity / this.oldQuantity));
+
+      // console.log(value);
+      return price;
+    },
     pairStatus() {
-      if (this.method === 'buy') {
-        const price = ((this.oldQuantity * this.oldPrice) + (this.newQuantity * this.pair.Price))
-          / (this.oldQuantity + this.newQuantity);
-        console.log(price);
-
-        if (price > this.pair.Price) {
-          return 'buy';
-        }
-
-        return 'wait';
+      if (this.averagePrice > this.pair.Price + ((this.pair.Price / 100) * 1.5)) {
+        return 'buy';
       }
 
-      if (this.method === 'sell') {
-        const value = this.oldPrice + ((this.pair.Price - this.oldPrice)
-          / (this.newQuantity / this.oldQuantity));
-
-        console.log(value);
-
-        if (value > this.oldPrice) {
-          return 'sell';
-        }
-
-        return 'wait';
+      if (this.averagePrice < this.pair.Price + ((this.pair.Price / 100) * 1.5)) {
+        return 'sell';
       }
 
-      return '';
+      return 'wait';
     },
     pairStatusText() {
       let text;
@@ -113,13 +108,10 @@ export default {
       return this.pair.Label.split('/')[0];
     },
     coursePercent() {
-      if (!this.oldPrice) { return ''; }
-
-      return (this.pair.Price / ((this.oldPrice / 100) * 1)) - 100;
+      // return this.pair.Price / (this.averagePrice / 100);
+      return ((this.pair.Price / this.averagePrice) * 100 - 100);
     },
     coursePercentText() {
-      if (!this.oldPrice) { return ''; }
-
       const percent = Math.round(this.coursePercent * 100) / 100;
 
       return this.coursePercent > 0 ? `+${percent}%` : `${percent}%`;
@@ -129,8 +121,9 @@ export default {
     deletePair() {
       this.$emit('delete', this.index);
     },
-    setMethod(method) {
-      this.method = method;
+    openModal(method) {
+      // TODO: open modal
+      console.log(method);
     },
   },
 };

@@ -22,12 +22,7 @@
       <tr>
         <td></td>
         <td></td>
-        <td title='Новое количество'>
-          <div class='currency-code'>
-            <input type='text' v-model='newQuantity'>
-            {{ currencyCode }}
-          </div>
-        </td>
+        <td></td>
         <td title='Старое количество'>
           <div class='currency-code'>
             <input type='text' v-model='oldQuantity'>
@@ -108,8 +103,7 @@ export default {
       return this.pair.Label.split('/')[0];
     },
     coursePercent() {
-      // return this.pair.Price / (this.averagePrice / 100);
-      return ((this.pair.Price / this.averagePrice) * 100 - 100);
+      return ((this.pair.Price / this.averagePrice) * 100) - 100;
     },
     coursePercentText() {
       const percent = Math.round(this.coursePercent * 100) / 100;

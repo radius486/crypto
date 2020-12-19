@@ -137,6 +137,9 @@ export default {
 }
 .refresh-button {
 }
+.currency-pairs {
+  margin-top: 20px;
+}
 .error {
   color: #f00;
   display: block;

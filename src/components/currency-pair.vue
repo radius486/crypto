@@ -1,36 +1,36 @@
 <template>
   <div class='currency-pair'>
-    <table>
-      <tr>
-        <td>{{ pair.Label }}</td>
-        <td></td>
-        <td title='Новый курс'>{{ pair.Price }}</td>
-        <td class='buy'>
-          <button @click.prevent="openModal('buy')">Купить</button>
-        </td>
-      </tr>
-      <tr>
-        <td :class='pairStatus'>{{ pairStatusText }}</td>
-        <td class='course-percent'>{{ coursePercentText }}</td>
-        <td title='Средневзвешенный курс'>
+    <div class='currency-pair__table'>
+      <div class='currency-pair__row'>
+        <div class='currency-pair__column'>{{ pair.Label }}</div>
+        <div class='currency-pair__column'></div>
+        <div class='currency-pair__column' title='Новый курс'>{{ pair.Price }}</div>
+        <div class='currency-pair__column buy'>
+          <button class='button__buy' @click.prevent="openModal('buy')">Купить</button>
+        </div>
+      </div>
+      <div class='currency-pair__row'>
+        <div class='currency-pair__column' :class='pairStatus'>{{ pairStatusText }}</div>
+        <div class='currency-pair__column course-percent'>{{ coursePercentText }}</div>
+        <div class='currency-pair__column' title='Средневзвешенный курс'>
           <input type='text' v-model='averagePrice'>
-        </td>
-        <td class='sell'>
-          <button @click.prevent="openModal('sell')">Продать</button>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td title='Старое количество'>
+        </div>
+        <div class='currency-pair__column sell'>
+          <button class='button__sell' @click.prevent="openModal('sell')">Продать</button>
+        </div>
+      </div>
+      <div class='currency-pair__row'>
+        <div class='currency-pair__column'></div>
+        <div class='currency-pair__column'></div>
+        <div class='currency-pair__column'></div>
+        <div class='currency-pair__column' title='Старое количество'>
           <div class='currency-code'>
             <input type='text' v-model='oldQuantity'>
             {{ currencyCode }}
           </div>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
     <button @click.prevent='deletePair'>Удалить</button>
   </div>
 </template>
@@ -127,23 +127,38 @@ export default {
 <style scoped>
 .currency-pair {
   width: 100%;
+  margin-bottom: 20px;
+}
+.currency-pair__table {
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+}
+.currency-pair__row {
+  display: flex;
+}
+.currency-pair__column {
+  flex-basis: 25%;
+  padding: 5px;
+  border-bottom: 2px solid #000;
+  border-right: 2px solid #000;
+  box-sizing: border-box;
+}
+.button__buy,
+.button__sell {
+  border: none;
+  background: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: none;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: left;
 }
 button {
   margin-top: 10px;
-}
-table {
-  width: 100%;
-  border-left: 2px solid #000;
-  border-bottom: 2px solid #000;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-td {
-  width: 25%;
-  border-top: 2px solid #000;
-  border-right: 2px solid #000;
-  padding: 5px;
-  color: #000;
 }
 input[type='text'] {
   padding: 0;
@@ -155,7 +170,7 @@ input[type='text'] {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
-  max-width: 100%;
+  width: 50%;
 }
 input[type='text']:focus {
   border: 0px;

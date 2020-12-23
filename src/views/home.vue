@@ -4,7 +4,7 @@
       <option v-for='(label, index) in pairList' :key='index'>{{ label }}</option>
     </select>
     <button @click.prevent='addPair'>+Добавить валютную пару</button>
-    <button @click.prevent='getData' class='refresh-button'>Обновить данные</button>
+    <button @click.prevent='getMarketData' class='refresh-button'>Обновить данные</button>
     <strong v-if="$store.getters['markets/error']" class='error'>
       Error: {{ $store.getters['markets/error'] }}
     </strong>
@@ -34,12 +34,28 @@ export default {
     return {
       currentPairLabel: null,
       key: '',
-      pairLabels: [
-        '8BIT/BTC',
-        'ZZZ/BTC',
-        'ZCH/BTC',
-        '0XBTC/BTC',
+      userPairs: [
+        {
+          label: '8BIT/BTC',
+          averagePrice: null,
+        },
+        {
+          label: 'ZZZ/BTC',
+          averagePrice: null,
+        },
+        {
+          label: 'ZCH/BTC',
+          averagePrice: null,
+        },
+        {
+          label: '0XBTC/BTC',
+          averagePrice: null,
+        },
       ],
+      user: {
+        _id: null,
+        pairs: [],
+      },
     };
   },
   computed: {
@@ -58,9 +74,9 @@ export default {
 
       const data = [];
 
-      this.pairLabels.forEach((Label) => {
+      this.$store.getters['users/activeUser'].pairs.forEach((pair) => {
         // eslint-disable-next-line
-        const currentPair = this.market.find((item) => item.Label === Label) || { Label };
+        const currentPair = this.market.find((item) => item.Label === pair.label) || { Label: pair.label };
 
         data.push(currentPair);
       });
@@ -72,14 +88,34 @@ export default {
     addPair() {
       if (!this.market || !this.currentPairLabel) { return; }
 
-      this.pairLabels.push(this.currentPairLabel);
+      this.user.pairs.push({
+        label: this.currentPairLabel,
+        averagePrice: null,
+      });
+
+      this.updateUserData();
     },
     deletePair(index) {
-      this.pairLabels.splice(index, 1);
+      this.user.pairs.splice(index, 1);
+
+      this.updateUserData();
     },
-    async getData() {
-      this.$store.dispatch('markets/fetchMarkets');
+    async getMarketData() {
+      await this.$store.dispatch('markets/fetchMarkets');
     },
+    async updateUserData() {
+      await this.$store.dispatch('users/updateUserData', this.user);
+    },
+  },
+  created() {
+    const { _id, pairs } = this.$store.getters['users/activeUser'];
+
+    const user = {
+      _id,
+      pairs,
+    };
+
+    Object.assign(this.user, user);
   },
 };
 </script>

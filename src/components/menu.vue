@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     linkClass(to) {
-      return this.$route.name.match(to) ? 'active' : '';
+      return this.$route.name && this.$route.name.match(to) ? 'active' : '';
     },
   },
 };

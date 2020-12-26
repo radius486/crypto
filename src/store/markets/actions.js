@@ -1,8 +1,11 @@
 import * as queries from './queries';
 
-export async function fetchMarkets({ commit }) {
-  const queryParams = {
+export async function fetchMarkets({ commit, rootGetters }) {
+  const { key } = rootGetters['users/activeUser'];
 
+  const queryParams = {
+    key,
+    fiat: 'btc',
   };
 
   try {
@@ -19,15 +22,22 @@ export async function fetchMarkets({ commit }) {
   }
 }
 
-export async function fetchUsdMarkets({ commit }) {
-  const queryParams = {
+export async function fetchUsdMarkets({ commit, rootGetters }) {
+  const { key } = rootGetters['users/activeUser'];
 
+  const queryParams = {
+    key,
+    fiat: 'usd',
   };
 
   try {
-    const { markets } = await queries.getUsdMarketList(queryParams);
+    const { Markets, error } = await queries.getUsdMarketList(queryParams);
 
-    commit('SET_USD_MARKET_LIST', markets);
+    if (error) {
+      commit('SET_MARKET_ERROR', error);
+    }
+
+    commit('SET_USD_MARKET_LIST', Markets);
   } catch (error) {
     // eslint-disable-next-line
     console.error(error);

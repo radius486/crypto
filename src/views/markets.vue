@@ -12,6 +12,7 @@
         <div class='market-table__column'></div>
       </div>
     </div>
+    {{ activeUser }}
   </div>
 </template>
 
@@ -46,6 +47,9 @@ export default {
     };
   },
   computed: {
+    activeUser() {
+      return this.$store.getters['users/activeUser'];
+    },
   },
   methods: {
   },

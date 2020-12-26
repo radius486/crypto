@@ -23,8 +23,8 @@
         <div class='currency-pair__column'></div>
         <div class='currency-pair__column' title='Старое количество'>
           <div class='currency-code'>
-            <input type='text' v-model='oldQuantity'>
-            {{ currencyCode }}
+            <span>{{ pair.oldQuantity }}</span>
+            <span>{{ currencyCode }}</span>
           </div>
         </div>
       </div>
@@ -77,7 +77,6 @@ export default {
   data() {
     return {
       newQuantity: 10,
-      oldQuantity: 20,
       showModal: false,
       transactionQuantity: null,
       transactionPrice: null,
@@ -100,11 +99,11 @@ export default {
       return this.pair.averagePrice;
     },
     pairStatus() {
-      if (this.averagePrice > this.pair.Price + ((this.pair.Price / 100) * 1.5)) {
+      if (this.coursePercent < -1.5) {
         return 'buy';
       }
 
-      if (this.averagePrice < this.pair.Price + ((this.pair.Price / 100) * 1.5)) {
+      if (this.coursePercent > 1.5) {
         return 'sell';
       }
 
@@ -255,6 +254,7 @@ export default {
 }
 .currency-code {
   display: flex;
+  justify-content: space-between;
 }
 .course-percent {
   font-size: 18px;

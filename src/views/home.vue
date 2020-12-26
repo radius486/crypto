@@ -12,7 +12,7 @@
       <CurrencyPair
         v-for='(pair, index) in pairs'
         :pair='pair'
-        :key='`currency_pair_${index}`'
+        :key='`currency_pair_${index}_${pairIterator}`'
         :index='index'
         @delete='deletePair'
         @buy='buyCurrency'
@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      pairIterator: 0,
       currentPairLabel: null,
       user: {
         _id: null,
@@ -60,6 +61,12 @@ export default {
       this.$store.getters['users/activeUser'].pairs.forEach((pair) => {
         // eslint-disable-next-line
         const currentPair = this.market.find((item) => item.Label === pair.label) || { Label: pair.label };
+
+        const code = pair.label.split('/')[0];
+
+        const currency = this.user.currencies.find(item => item.code === code);
+
+        currentPair.oldQuantity = currency && currency.quantity;
 
         currentPair.averagePrice = pair.averagePrice;
 
@@ -130,6 +137,11 @@ export default {
     };
 
     Object.assign(this.user, user);
+  },
+  watch: {
+    pairs(val) {
+      this.pairIterator += 1;
+    },
   },
 };
 </script>

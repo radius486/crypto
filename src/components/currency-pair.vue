@@ -12,9 +12,7 @@
       <div class='currency-pair__row'>
         <div class='currency-pair__column' :class='pairStatus'>{{ pairStatusText }}</div>
         <div class='currency-pair__column course-percent'>{{ coursePercentText }}</div>
-        <div class='currency-pair__column' title='Средневзвешенный курс'>
-          <input type='text' v-model='averagePrice'>
-        </div>
+        <div class='currency-pair__column' title='Средневзвешенный курс'>{{ averagePrice }}</div>
         <div class='currency-pair__column sell'>
           <button class='button__sell' @click.prevent="openModal('sell')">Продать</button>
         </div>
@@ -31,11 +29,36 @@
         </div>
       </div>
     </div>
-    <button @click.prevent='deletePair'>Удалить</button>
+    <button class='delete-button' @click.prevent='deletePair'>Удалить</button>
+    <v-modal
+      class='transaction-modal'
+      :show='showModal'
+      :title='modalTitle'
+      @click.native='closeModal'
+      @keyup.native.esc='closeModal'
+    >
+      <template #body>
+        <div class='transaction-modal__block'>
+          <label for='transaction-quantity'>Количество</label>
+          <input id='transaction-quantity' type='text' v-model='transactionQuantity'>
+        </div>
+        <div class='transaction-modal__block'>
+          <label for='transaction-price'>Цена</label>
+          <input id='transaction-price' type='text' v-model='transactionPrice'>
+        </div>
+      </template>
+      <template #actions>
+        <button @click.prevent='closeModal'>Отменить</button>
+        <button v-if="method === 'buy'" @click.prevent='buyCurrency()'>Купить</button>
+        <button v-if="method === 'sell'" @click.prevent='sellCurrency()'>Продать</button>
+      </template>
+    </v-modal>
   </div>
 </template>
 
 <script>
+import VModal from '@/components/v-modal';
+
 export default {
   name: 'CurrencyPair',
   props: {
@@ -48,10 +71,17 @@ export default {
       required: true,
     },
   },
+  components: {
+    VModal,
+  },
   data() {
     return {
       newQuantity: 10,
       oldQuantity: 20,
+      showModal: false,
+      transactionQuantity: null,
+      transactionPrice: null,
+      method: null,
     };
   },
   computed: {
@@ -59,15 +89,15 @@ export default {
       return this.pair.Price - (this.pair.Price * 0.1);
     },
     averagePrice() {
-      const price = ((this.oldQuantity * this.oldPrice) + (this.newQuantity * this.pair.Price))
-        / (this.oldQuantity + this.newQuantity);
-      console.log(price);
+      // const price = ((this.oldQuantity * this.oldPrice) + (this.newQuantity * this.pair.Price))
+      //   / (this.oldQuantity + this.newQuantity);
+      // console.log(price);
 
       // const value = this.oldPrice + ((this.pair.Price - this.oldPrice)
       //   / (this.newQuantity / this.oldQuantity));
 
       // console.log(value);
-      return price;
+      return this.pair.averagePrice;
     },
     pairStatus() {
       if (this.averagePrice > this.pair.Price + ((this.pair.Price / 100) * 1.5)) {
@@ -110,14 +140,51 @@ export default {
 
       return this.coursePercent > 0 ? `+${percent}%` : `${percent}%`;
     },
+    modalTitle() {
+      const text = this.method === 'buy' ? 'Купить' : 'Продать';
+      return `${text} ${this.currencyCode}`;
+    },
   },
   methods: {
     deletePair() {
       this.$emit('delete', this.index);
     },
     openModal(method) {
-      // TODO: open modal
-      console.log(method);
+      this.showModal = true;
+      this.method = method;
+    },
+    closeModal() {
+      this.showModal = false;
+      this.resetData();
+    },
+    resetData() {
+      this.method = null;
+      this.transactionQuantity = null;
+      this.transactionPrice = null;
+    },
+    async buyCurrency() {
+      const data = {
+        averagePrice: Number(this.transactionPrice),
+        quantity: Number(this.transactionQuantity),
+        code: this.currencyCode,
+        label: this.pair.Label,
+        index: this.index,
+      };
+
+      await this.$emit('buy', data);
+      this.closeModal();
+    },
+    async sellCurrency() {
+      const data = {
+        averagePrice: Number(this.transactionPrice),
+        quantity: Number(this.transactionQuantity),
+        code: this.currencyCode,
+        label: this.pair.Label,
+        index: this.index,
+      };
+
+      await this.$emit('sell', data);
+      this.closeModal();
     },
   },
 };
@@ -157,10 +224,10 @@ export default {
   margin: 0;
   text-align: left;
 }
-button {
+.delete-button {
   margin-top: 10px;
 }
-input[type='text'] {
+.currency-pair__table input[type='text'] {
   padding: 0;
   font-size: 16px;
   color: #000;
@@ -172,7 +239,7 @@ input[type='text'] {
   box-shadow: none;
   width: 50%;
 }
-input[type='text']:focus {
+.currency-pair__table input[type='text']:focus {
   border: 0px;
   border-top-color: transparent !important;
   outline: none;
@@ -193,5 +260,15 @@ input[type='text']:focus {
   font-size: 18px;
   padding: 0 5px;
   font-weight: bold;
+}
+.transaction-modal__block {
+  margin-bottom: 15px;
+}
+.transaction-modal__block label {
+  display: block;
+}
+.transaction-modal__block input {
+  width: 100%;
+  box-sizing: border-box;
 }
 </style>

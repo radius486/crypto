@@ -9,14 +9,15 @@
       Error: {{ $store.getters['markets/error'] }}
     </strong>
     <div class='currency-pairs'>
-      <template v-for='(pair, index) in pairs'>
-        <CurrencyPair
-          :pair='pair'
-          :key='index'
-          :index='index'
-          @delete='deletePair'
-        />
-      </template>
+      <CurrencyPair
+        v-for='(pair, index) in pairs'
+        :pair='pair'
+        :key='`currency_pair_${index}`'
+        :index='index'
+        @delete='deletePair'
+        @buy='buyCurrency'
+        @sell='sellCurrency'
+      />
     </div>
   </div>
 </template>
@@ -33,28 +34,10 @@ export default {
   data() {
     return {
       currentPairLabel: null,
-      key: '',
-      userPairs: [
-        {
-          label: '8BIT/BTC',
-          averagePrice: null,
-        },
-        {
-          label: 'ZZZ/BTC',
-          averagePrice: null,
-        },
-        {
-          label: 'ZCH/BTC',
-          averagePrice: null,
-        },
-        {
-          label: '0XBTC/BTC',
-          averagePrice: null,
-        },
-      ],
       user: {
         _id: null,
         pairs: [],
+        currencies: [],
       },
     };
   },
@@ -77,6 +60,8 @@ export default {
       this.$store.getters['users/activeUser'].pairs.forEach((pair) => {
         // eslint-disable-next-line
         const currentPair = this.market.find((item) => item.Label === pair.label) || { Label: pair.label };
+
+        currentPair.averagePrice = pair.averagePrice;
 
         data.push(currentPair);
       });
@@ -106,13 +91,42 @@ export default {
     async updateUserData() {
       await this.$store.dispatch('users/updateUserData', this.user);
     },
+    buyCurrency(data) {
+      const { index, averagePrice, code, quantity, label } = data;
+
+      this.user.pairs[index] = {
+        label,
+        averagePrice,
+      };
+
+      // eslint-disable-next-line
+      const currencyIndex = this.user.currencies.findIndex((item) => item.code === code);
+
+      const currency = {
+        code,
+        quantity,
+      };
+
+      if (currencyIndex > -1) {
+        this.user.currencies[currencyIndex] = currency;
+      } else {
+        this.user.currencies.push(currency);
+      }
+
+      this.updateUserData();
+    },
+    sellCurrency(data) {
+      console.log('Sell');
+      console.log(data);
+    },
   },
   created() {
-    const { _id, pairs } = this.$store.getters['users/activeUser'];
+    const { _id, pairs, currencies } = this.$store.getters['users/activeUser'];
 
     const user = {
       _id,
       pairs,
+      currencies,
     };
 
     Object.assign(this.user, user);

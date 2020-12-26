@@ -7,12 +7,12 @@
         <div class='market-table__column'>В долларах</div>
       </div>
       <div class='market-table__row' v-for='(currency, index) in currencies' :key='index'>
-        <div class='market-table__column'>{{ currency.label }}</div>
+        <div class='market-table__column'>{{ currency.code }}</div>
         <div class='market-table__column'>{{ currency.quantity }}</div>
         <div class='market-table__column'></div>
       </div>
     </div>
-    {{ activeUser }}
+    <pre>{{ activeUser }}</pre>
   </div>
 </template>
 
@@ -26,32 +26,31 @@ export default {
   },
   data() {
     return {
-      currencies: [
-        {
-          label: 'BTC',
-          quantity: 30,
-        },
-        {
-          label: 'ETH',
-          quantity: 15,
-        },
-        {
-          label: 'BCH',
-          quantity: 10,
-        },
-        {
-          label: 'ETC',
-          quantity: 20,
-        },
-      ],
+      user: {
+        _id: null,
+        currencies: [],
+      },
     };
   },
   computed: {
     activeUser() {
       return this.$store.getters['users/activeUser'];
     },
+    currencies() {
+      return this.$store.getters['users/activeUser'].currencies;
+    },
   },
   methods: {
+  },
+  created() {
+    const { _id, currencies } = this.$store.getters['users/activeUser'];
+
+    const user = {
+      _id,
+      currencies,
+    };
+
+    Object.assign(this.user, user);
   },
 };
 </script>

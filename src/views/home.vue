@@ -51,7 +51,13 @@ export default {
 
       const list = this.market.map(pair => pair.Label);
 
-      return list;
+      return list.reduce((accumulator, pair) => {
+        if (this.user.pairs.find(item => item.label === pair)) {
+          return accumulator;
+        }
+
+        return [...accumulator, pair];
+      }, []);
     },
     pairs() {
       if (!this.market) { return []; }
@@ -84,6 +90,8 @@ export default {
         label: this.currentPairLabel,
         averagePrice: null,
       });
+
+      this.currentPairLabel = null;
 
       this.updateUserData();
     },
@@ -137,12 +145,12 @@ export default {
       };
 
       if (currencyIndex > -1) {
-        if (quantity !== 0) {
+        if (quantity > 0) {
           this.user.currencies[currencyIndex] = currency;
         } else {
           this.user.currencies.splice(currencyIndex, 1);
         }
-      } else if (quantity !== 0) {
+      } else if (quantity > 0) {
         this.user.currencies.push(currency);
       }
 

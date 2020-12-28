@@ -102,6 +102,10 @@ export default {
       },
     },
     pairStatus() {
+      if (!this.pair.averagePrice) {
+        return '';
+      }
+
       if (this.coursePercent < -1.5) {
         return 'buy';
       }
@@ -135,9 +139,17 @@ export default {
       return this.pair.Label.split('/')[0];
     },
     coursePercent() {
+      if (!this.pair.averagePrice) {
+        return null;
+      }
+
       return ((this.pair.Price / this.pair.averagePrice) * 100) - 100;
     },
     coursePercentText() {
+      if (!this.pair.averagePrice) {
+        return null;
+      }
+
       const percent = Math.round(this.coursePercent * 100) / 100;
 
       return this.coursePercent > 0 ? `+${percent}%` : `${percent}%`;

@@ -4,7 +4,7 @@
       <div class='market-table__row'>
         <div class='market-table__column'>Валюта</div>
         <div class='market-table__column'>В эквиваленте</div>
-        <div class='market-table__column'>В долларах</div>
+        <div class='market-table__column'>В долларах США</div>
       </div>
       <div class='market-table__row' v-for='(currency, index) in currencies' :key='index'>
         <div class='market-table__column'>{{ currency.code }}</div>

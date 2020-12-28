@@ -59,14 +59,14 @@ export default {
       const data = [];
 
       this.$store.getters['users/activeUser'].pairs.forEach((pair) => {
-        // eslint-disable-next-line
-        const currentPair = this.market.find((item) => item.Label === pair.label) || { Label: pair.label };
+        const currentPair = this.market.find(item => item.Label === pair.label)
+          || { Label: pair.label };
 
         const code = pair.label.split('/')[0];
 
         const currency = this.user.currencies.find(item => item.code === code);
 
-        currentPair.oldQuantity = currency && currency.quantity;
+        currentPair.oldQuantity = currency && currency.quantity ? currency.quantity : 0;
 
         currentPair.averagePrice = pair.averagePrice;
 
@@ -106,8 +106,7 @@ export default {
         averagePrice,
       };
 
-      // eslint-disable-next-line
-      const currencyIndex = this.user.currencies.findIndex((item) => item.code === code);
+      const currencyIndex = this.user.currencies.findIndex(item => item.code === code);
 
       const currency = {
         code,
@@ -123,8 +122,31 @@ export default {
       this.updateUserData();
     },
     sellCurrency(data) {
-      console.log('Sell');
-      console.log(data);
+      const { index, averagePrice, code, quantity, label } = data;
+
+      this.user.pairs[index] = {
+        label,
+        averagePrice,
+      };
+
+      const currencyIndex = this.user.currencies.findIndex(item => item.code === code);
+
+      const currency = {
+        code,
+        quantity,
+      };
+
+      if (currencyIndex > -1) {
+        if (quantity !== 0) {
+          this.user.currencies[currencyIndex] = currency;
+        } else {
+          this.user.currencies.splice(currencyIndex, 1);
+        }
+      } else if (quantity !== 0) {
+        this.user.currencies.push(currency);
+      }
+
+      this.updateUserData();
     },
   },
   created() {
@@ -139,7 +161,7 @@ export default {
     Object.assign(this.user, user);
   },
   watch: {
-    pairs(val) {
+    pairs() {
       this.pairIterator += 1;
     },
   },

@@ -12,7 +12,9 @@
       <div class='currency-pair__row'>
         <div class='currency-pair__column' :class='pairStatus'>{{ pairStatusText }}</div>
         <div class='currency-pair__column course-percent'>{{ coursePercentText }}</div>
-        <div class='currency-pair__column' title='Средневзвешенный курс'>{{ averagePrice }}</div>
+        <div class='currency-pair__column' title='Средневзвешенный курс'>
+          {{ pair.averagePrice }}
+        </div>
         <div class='currency-pair__column sell'>
           <button class='button__sell' @click.prevent="openModal('sell')">Продать</button>
         </div>
@@ -40,11 +42,11 @@
       <template #body>
         <div class='transaction-modal__block'>
           <label for='transaction-quantity'>Количество</label>
-          <input id='transaction-quantity' type='text' v-model='transactionQuantity'>
+          <input id='transaction-quantity' type='text' v-model='computedTransactionQuantity'>
         </div>
         <div class='transaction-modal__block'>
           <label for='transaction-price'>Цена</label>
-          <input id='transaction-price' type='text' v-model='transactionPrice'>
+          <input id='transaction-price' type='text' v-model='computedTransactionPrice'>
         </div>
       </template>
       <template #actions>
@@ -76,27 +78,28 @@ export default {
   },
   data() {
     return {
-      newQuantity: 10,
       showModal: false,
-      transactionQuantity: null,
-      transactionPrice: null,
+      transactionQuantity: 0,
+      transactionPrice: 0,
       method: null,
     };
   },
   computed: {
-    oldPrice() {
-      return this.pair.Price - (this.pair.Price * 0.1);
+    computedTransactionQuantity: {
+      get() {
+        return this.transactionQuantity || null;
+      },
+      set(value) {
+        this.transactionQuantity = Number(value);
+      },
     },
-    averagePrice() {
-      // const price = ((this.oldQuantity * this.oldPrice) + (this.newQuantity * this.pair.Price))
-      //   / (this.oldQuantity + this.newQuantity);
-      // console.log(price);
-
-      // const value = this.oldPrice + ((this.pair.Price - this.oldPrice)
-      //   / (this.newQuantity / this.oldQuantity));
-
-      // console.log(value);
-      return this.pair.averagePrice;
+    computedTransactionPrice: {
+      get() {
+        return this.transactionPrice || null;
+      },
+      set(value) {
+        this.transactionPrice = Number(value);
+      },
     },
     pairStatus() {
       if (this.coursePercent < -1.5) {
@@ -132,7 +135,7 @@ export default {
       return this.pair.Label.split('/')[0];
     },
     coursePercent() {
-      return ((this.pair.Price / this.averagePrice) * 100) - 100;
+      return ((this.pair.Price / this.pair.averagePrice) * 100) - 100;
     },
     coursePercentText() {
       const percent = Math.round(this.coursePercent * 100) / 100;
@@ -158,13 +161,21 @@ export default {
     },
     resetData() {
       this.method = null;
-      this.transactionQuantity = null;
-      this.transactionPrice = null;
+      this.transactionQuantity = 0;
+      this.transactionPrice = 0;
     },
     async buyCurrency() {
+      const quantity = this.pair.oldQuantity + this.transactionQuantity;
+
+      let averagePrice = ((this.pair.oldQuantity * this.pair.averagePrice)
+        + (this.transactionQuantity * this.transactionPrice))
+        / (this.pair.oldQuantity + this.transactionQuantity);
+
+      averagePrice = Math.round(averagePrice * 100000000) / 100000000;
+
       const data = {
-        averagePrice: Number(this.transactionPrice),
-        quantity: Number(this.transactionQuantity),
+        averagePrice,
+        quantity,
         code: this.currencyCode,
         label: this.pair.Label,
         index: this.index,
@@ -174,9 +185,16 @@ export default {
       this.closeModal();
     },
     async sellCurrency() {
+      const quantity = this.pair.oldQuantity - this.transactionQuantity;
+
+      let averagePrice = this.pair.averagePrice + ((this.pair.averagePrice - this.transactionPrice)
+         / (this.pair.oldQuantity / this.transactionQuantity));
+
+      averagePrice = Math.round(averagePrice * 100000000) / 100000000;
+
       const data = {
-        averagePrice: Number(this.transactionPrice),
-        quantity: Number(this.transactionQuantity),
+        averagePrice,
+        quantity,
         code: this.currencyCode,
         label: this.pair.Label,
         index: this.index,

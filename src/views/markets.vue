@@ -30,6 +30,7 @@ export default {
         _id: null,
         currencies: [],
       },
+      updateData: null,
     };
   },
   computed: {
@@ -58,6 +59,13 @@ export default {
     };
 
     Object.assign(this.user, user);
+
+    this.updateData = setInterval(() => {
+      // this.$store.dispatch('markets/fetchUsdMarkets');
+    }, 300000);
+  },
+  destroyed() {
+    clearInterval(this.updateData);
   },
 };
 </script>

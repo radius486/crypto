@@ -40,6 +40,7 @@ export default {
         pairs: [],
         currencies: [],
       },
+      updateData: null,
     };
   },
   computed: {
@@ -167,6 +168,13 @@ export default {
     };
 
     Object.assign(this.user, user);
+
+    this.updateData = setInterval(() => {
+      // this.$store.dispatch('markets/fetchMarkets');
+    }, 300000);
+  },
+  destroyed() {
+    clearInterval(this.updateData);
   },
   watch: {
     pairs() {

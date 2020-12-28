@@ -1,5 +1,7 @@
 export const marketList = state => state.marketList;
 
+export const usdMarketList = state => state.usdMarketList;
+
 const market = [
   { Label: '$AAPL/BTC', Name: '$aapl', Price: 0.00032184, Volume_24h: 0.00000000, Timestamp: 1603273440 },
   { Label: 'YEET/BTC', Name: '$yeet', Price: 0.00078805, Volume_24h: 0.00000000, Timestamp: 1604353440 },
@@ -34,7 +36,258 @@ const market = [
   { Label: 'AAVE/BTC', Name: 'Aave', Price: 0.00430396, Volume_24h: 5433.56834127, Timestamp: 1607776080 },
 ];
 
+const usdMarket = [
+  {
+    Label: '$AAPL/USD',
+    Name: '$aapl',
+    Price: 3.92754931,
+    Volume_24h: 0,
+    Timestamp: 1603273440,
+  },
+  {
+    Label: 'YEET/USD',
+    Name: '$yeet',
+    Price: 10.74434998,
+    Volume_24h: 0,
+    Timestamp: 1604353440,
+  },
+  {
+    Label: '007/USD',
+    Name: '007coin',
+    Price: 0.48785974,
+    Volume_24h: 0,
+    Timestamp: 1603802520,
+  },
+  {
+    Label: 'ZOC/USD',
+    Name: '01coin',
+    Price: 0.00427046,
+    Volume_24h: 7501.742791659702,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: 'ZCH/USD',
+    Name: '0cash',
+    Price: 0.0002669,
+    Volume_24h: 21.20030657592892,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: 'ZCN/USD',
+    Name: '0chain',
+    Price: 0.37419962,
+    Volume_24h: 44662.798955971695,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: 'ZRX/USD',
+    Name: '0x',
+    Price: 0.38354127,
+    Volume_24h: 37677803.3311366,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '0XBTC/USD',
+    Name: '0xbitcoin',
+    Price: 0.10768617,
+    Volume_24h: 0,
+    Timestamp: 1594143600,
+  },
+  {
+    Label: 'ZXC/USD',
+    Name: '0xcert',
+    Price: 0.00213523,
+    Volume_24h: 4519.588894956577,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: 'TSHP/USD',
+    Name: '12ships',
+    Price: 0.00320284,
+    Volume_24h: 750474.3696414552,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '1AI/USD',
+    Name: '1aitoken',
+    Price: 0.00027488,
+    Volume_24h: 0,
+    Timestamp: 1609080360,
+  },
+  {
+    Label: '1INCH/USD',
+    Name: '1inch',
+    Price: 1.10711843,
+    Volume_24h: 113913170.86991894,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: 'FST/USD',
+    Name: '1irstcoin',
+    Price: 0.83407548,
+    Volume_24h: 47170.41618828135,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '1SG/USD',
+    Name: '1sg',
+    Price: 0.09097023,
+    Volume_24h: 0,
+    Timestamp: 1594971960,
+  },
+  {
+    Label: '1WO/USD',
+    Name: '1world',
+    Price: 0.08887908,
+    Volume_24h: 9399.322121589592,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '1X2/USD',
+    Name: '1x2coin',
+    Price: 0.02511974,
+    Volume_24h: 0,
+    Timestamp: 1576457040,
+  },
+  {
+    Label: '2BACCO/USD',
+    Name: '2bacco',
+    Price: 0.00011351,
+    Volume_24h: 0,
+    Timestamp: 1602409440,
+  },
+  {
+    Label: '2BASED/USD',
+    Name: '2based-finance',
+    Price: 1.97615836,
+    Volume_24h: 176607.21585000804,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '2KEY/USD',
+    Name: '2keynetwork',
+    Price: 0.03122778,
+    Volume_24h: 308764.9055684808,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '2X2/USD',
+    Name: '2x2',
+    Price: 0.0002669,
+    Volume_24h: 13.655035444208321,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: 'FIT/USD',
+    Name: '300fit',
+    Price: 0.00293594,
+    Volume_24h: 504330.5244866715,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '300/USD',
+    Name: '300token',
+    Price: 203.06000382,
+    Volume_24h: 0,
+    Timestamp: 1547246940,
+  },
+  {
+    Label: '3DC/USD',
+    Name: '3dcoin',
+    Price: 0.00248962,
+    Volume_24h: 0,
+    Timestamp: 1589355840,
+  },
+  {
+    Label: '3XT/USD',
+    Name: '3xt-token',
+    Price: 1429.35849766,
+    Volume_24h: 124704.59986899771,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '404/USD',
+    Name: '404coin',
+    Price: 0.00400356,
+    Volume_24h: 106.7156888617393,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '42/USD',
+    Name: '42Coin',
+    Price: 33626.56063165,
+    Volume_24h: 0,
+    Timestamp: 1597098000,
+  },
+  {
+    Label: '4ART/USD',
+    Name: '4art-coin',
+    Price: 0.01548044,
+    Volume_24h: 1509.4824534572638,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: 'HIPHOP/USD',
+    Name: '4hiphop',
+    Price: 0.00010529,
+    Volume_24h: 0,
+    Timestamp: 1567901880,
+  },
+  {
+    Label: 'KWATT/USD',
+    Name: '4new',
+    Price: 0.0002669,
+    Volume_24h: 0.5124335647642136,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '7E/USD',
+    Name: '7eleven',
+    Price: 0.00019279,
+    Volume_24h: 0,
+    Timestamp: 1606756440,
+  },
+  {
+    Label: 'SVN/USD',
+    Name: '7finance',
+    Price: 0.89316238,
+    Volume_24h: 0,
+    Timestamp: 1608285420,
+  },
+  {
+    Label: 'MPH/USD',
+    Name: '88mph',
+    Price: 31.91693274,
+    Volume_24h: 755265.5779045854,
+    Timestamp: 1609193520,
+  },
+  {
+    Label: '8BIT/USD',
+    Name: '8bit',
+    Price: 0.01077418,
+    Volume_24h: 0,
+    Timestamp: 1547448780,
+  },
+  {
+    Label: 'NMN/USD',
+    Name: '99masternodes',
+    Price: 0.00190542,
+    Volume_24h: 0,
+    Timestamp: 1609161000,
+  },
+  {
+    Label: 'AAVE/USD',
+    Name: 'Aave',
+    Price: 82.83317091,
+    Volume_24h: 104843266.89007738,
+    Timestamp: 1609193520,
+  },
+];
+
 export const mainMarket = () => market;
 // export const mainMarket = (state, getters) => getters.marketList && getters.marketList[0];
+
+export const mainUsdMarket = () => usdMarket;
+// export const mainUsdMarket = (state, getters) => getters.usdMarketList && getters.usdMarketList[0];
 
 export const error = state => state.error;

@@ -9,7 +9,7 @@
       <div class='market-table__row' v-for='(currency, index) in currencies' :key='index'>
         <div class='market-table__column'>{{ currency.code }}</div>
         <div class='market-table__column'>{{ currency.quantity }}</div>
-        <div class='market-table__column'></div>
+        <div class='market-table__column'>{{ calculateTotalUsdPrice(currency) }}</div>
       </div>
     </div>
     <pre>{{ activeUser }}</pre>
@@ -41,6 +41,13 @@ export default {
     },
   },
   methods: {
+    calculateTotalUsdPrice({ code, quantity }) {
+      const pairLabel = `${code}/USD`;
+      const pair = this.$store.getters['markets/mainUsdMarket'].find(item => item.Label === pairLabel);
+      const price = pair && pair.Price;
+
+      return price && Math.round(price * quantity * 100) / 100;
+    },
   },
   created() {
     const { _id, currencies } = this.$store.getters['users/activeUser'];

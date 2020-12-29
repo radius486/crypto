@@ -2,7 +2,7 @@
 
 export const activeUser = state => state.activeUser;
 
-export const userId = state => state.userId || localStorage.getItem('userId');
+export const userId = state => state.userId;
 
 export const error = state => state.error;
 

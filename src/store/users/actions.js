@@ -39,6 +39,17 @@ export async function updateUserData({ dispatch, getters }, user) {
   }
 }
 
+export async function setUserIdFromStorage({ commit }) {
+  try {
+    const userId = await localStorage.getItem('userId');
+
+    await commit('SET_USER_ID', userId);
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+  }
+}
+
 export async function login({ commit }, payload) {
   try {
     const userId = await queries.login(payload);

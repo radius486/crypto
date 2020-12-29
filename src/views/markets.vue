@@ -1,5 +1,5 @@
 <template>
-  <div class='market-container'>
+  <div class='market-container' v-if="$store.getters['users/activeUser']">
     <div class='market-table'>
       <div class='market-table__row'>
         <div class='market-table__column'>Валюта</div>

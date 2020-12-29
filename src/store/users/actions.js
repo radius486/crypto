@@ -43,7 +43,24 @@ export async function login({ commit }, payload) {
   try {
     const userId = await queries.login(payload);
 
-    commit('SET_USER_ID', userId);
+    if (!userId) {
+      const error = 'Неправильное имя пользователя или пароль';
+
+      commit('SET_USER_ERROR', error);
+    } else {
+      commit('SET_USER_ID', userId);
+      localStorage.setItem('userId', userId);
+    }
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+  }
+}
+
+export async function logout({ commit }) {
+  try {
+    await localStorage.removeItem('userId');
+    commit('RESET_USER');
   } catch (error) {
     // eslint-disable-next-line
     console.error(error);

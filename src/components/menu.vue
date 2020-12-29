@@ -1,7 +1,10 @@
 <template>
   <div class="menu">
-    <router-link to='/' :class="linkClass('Home')">Главная</router-link>
-    <router-link to='/markets' :class="linkClass('Markets')">Биржи</router-link>
+    <div class='link-container'>
+      <router-link to='/' :class="linkClass('Home')">Главная</router-link>
+      <router-link to='/markets' :class="linkClass('Markets')">Биржи</router-link>
+    </div>
+    <button class='logout' @click='logout'>Выйти</button>
   </div>
 </template>
 
@@ -16,6 +19,10 @@ export default {
     linkClass(to) {
       return this.$route.name && this.$route.name.match(to) ? 'active' : '';
     },
+    async logout() {
+      await this.$store.dispatch('users/logout');
+      this.$router.push('/login');
+    },
   },
 };
 </script>
@@ -28,6 +35,8 @@ export default {
   text-align: left;
   margin-bottom: 20px;
   font-size: 0px;
+  display: flex;
+  justify-content: space-between;
 }
 a {
   text-decoration: none;
@@ -35,6 +44,8 @@ a {
   text-transform: uppercase;
   margin-right: 10px;
   font-size: 18px;
+}
+.logout {
 }
 .active {
   text-decoration: underline;

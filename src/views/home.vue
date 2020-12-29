@@ -1,5 +1,5 @@
 <template>
-  <div class='home-container'>
+  <div class='home-container' v-if="$store.getters['users/activeUser']">
     <select v-model='currentPairLabel' class='currency-select'>
       <option v-for='(label, index) in pairList' :key='index'>{{ label }}</option>
     </select>
@@ -60,7 +60,7 @@ export default {
       }, []);
     },
     pairs() {
-      if (!this.market) { return []; }
+      if (!this.market || !this.$store.getters['users/activeUser']) { return []; }
 
       const data = [];
 

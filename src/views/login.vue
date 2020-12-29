@@ -3,13 +3,16 @@
     <h1>Войти</h1>
     <div class='input-container'>
       <label for='username'>Имя пользователя</label>
-      <input id='username' type='text' v-model='username' />
+      <input @keyup.enter='login' id='username' type='text' v-model='username' />
     </div>
     <div class='input-container'>
       <label for='password'>Пароль</label>
-      <input id='password' type='password' v-model='password' />
+      <input @keyup.enter='login' id='password' type='password' v-model='password' />
     </div>
     <button @click.prevent='login'>Войти</button>
+    <strong v-if="$store.getters['users/error']" class='error'>
+      Error: {{ $store.getters['users/error'] }}
+    </strong>
   </div>
 </template>
 
@@ -57,5 +60,11 @@ export default {
 .input-container label {
   display: block;
   margin-bottom: 5px;
+}
+.error {
+  color: #f00;
+  display: block;
+  font-size: 20px;
+  margin-top: 20px;
 }
 </style>

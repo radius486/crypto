@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Menu/>
+    <Menu v-if='showMenu' />
     <router-view/>
   </div>
 </template>
@@ -12,6 +12,11 @@ export default {
   name: 'App',
   components: {
     Menu,
+  },
+  computed: {
+    showMenu() {
+      return !(this.$route.name && this.$route.name.match('Login'));
+    },
   },
 };
 </script>

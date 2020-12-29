@@ -21,3 +21,13 @@ export async function updateUserData(userId, data) {
 
   return response;
 }
+
+export async function login(payload) {
+  const { data } = await axios({
+    url: '/api/users/login',
+    method: 'post',
+    data: payload,
+  });
+
+  return data;
+}

@@ -3,8 +3,10 @@ import Router from 'vue-router';
 // import HelloWorld from '@/components/HelloWorld';
 import Home from '@/views/home';
 import Markets from '@/views/markets';
+import Login from '@/views/login';
 import beforeHome from './hooks/before-home';
 import beforeMarkets from './hooks/before-markets';
+import beforeLogin from './hooks/before-login';
 
 Vue.use(Router);
 
@@ -22,6 +24,12 @@ export default new Router({
       name: 'Markets',
       component: Markets,
       beforeEnter: beforeMarkets,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      beforeEnter: beforeLogin,
     },
   ],
 });

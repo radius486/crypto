@@ -34,3 +34,14 @@ export async function updateUserData({ dispatch }, user) {
     console.error(error);
   }
 }
+
+export async function login({ commit }, payload) {
+  try {
+    const userId = await queries.login(payload);
+
+    commit('SET_USER_ID', userId);
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+  }
+}

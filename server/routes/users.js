@@ -28,4 +28,14 @@ router.delete('/:id', async (req, res) => {
   res.json({ state: 'deleted' });
 });
 
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const response = await User.findOne({ username, password });
+
+  // eslint-disable-next-line
+  const data = response !== null ? response['_id'] : '';
+
+  res.json(data);
+});
+
 module.exports = router;

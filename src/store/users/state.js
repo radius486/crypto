@@ -1,5 +1,5 @@
 export const initialState = () => ({
-  userList: [],
+  // userList: [],
   activeUser: null,
   userId: null,
 });

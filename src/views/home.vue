@@ -36,7 +36,6 @@ export default {
       pairIterator: 0,
       currentPairLabel: null,
       user: {
-        _id: null,
         pairs: [],
         currencies: [],
       },
@@ -159,10 +158,9 @@ export default {
     },
   },
   created() {
-    const { _id, pairs, currencies } = this.$store.getters['users/activeUser'];
+    const { pairs, currencies } = this.$store.getters['users/activeUser'];
 
     const user = {
-      _id,
       pairs,
       currencies,
     };

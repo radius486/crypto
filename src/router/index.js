@@ -7,10 +7,11 @@ import Login from '@/views/login';
 import beforeHome from './hooks/before-home';
 import beforeMarkets from './hooks/before-markets';
 import beforeLogin from './hooks/before-login';
+import globalBeforeEach from './hooks/global-before-each';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -33,3 +34,7 @@ export default new Router({
     },
   ],
 });
+
+router.beforeEach(globalBeforeEach);
+
+export default router;

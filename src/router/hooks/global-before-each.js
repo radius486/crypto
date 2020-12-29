@@ -2,8 +2,8 @@ import store from '../../store';
 
 export default async (to, from, next) => {
   try {
-    await store.dispatch('users/getUserData');
-    // await store.dispatch('markets/fetchMarkets');
+    if (to.name !== 'Login' && !store.getters['users/userId']) next({ name: 'Login' });
+    else next();
 
     next();
   } catch (e) {

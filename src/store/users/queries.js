@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export async function getUserList() {
-  const { data } = await axios.get('/api/users');
-
-  return data;
-}
+// export async function getUserList() {
+//   const { data } = await axios.get('/api/users');
+//
+//   return data;
+// }
 
 export async function getUserData(userId) {
   const { data } = await axios.get(`/api/users/${userId}`);

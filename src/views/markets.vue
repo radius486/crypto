@@ -27,7 +27,6 @@ export default {
   data() {
     return {
       user: {
-        _id: null,
         currencies: [],
       },
       updateData: null,
@@ -51,10 +50,9 @@ export default {
     },
   },
   created() {
-    const { _id, currencies } = this.$store.getters['users/activeUser'];
+    const { currencies } = this.$store.getters['users/activeUser'];
 
     const user = {
-      _id,
       currencies,
     };
 

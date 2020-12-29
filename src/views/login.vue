@@ -7,7 +7,7 @@
     </div>
     <div class='input-container'>
       <label for='password'>Пароль</label>
-      <input id='password' type='text' v-model='password' />
+      <input id='password' type='password' v-model='password' />
     </div>
     <button @click.prevent='login'>Войти</button>
   </div>
@@ -25,13 +25,20 @@ export default {
   computed: {
   },
   methods: {
-    login() {
+    async login() {
       const payload = {
         username: this.username,
         password: this.password,
       };
 
-      this.$store.dispatch('users/login', payload);
+      await this.$store.dispatch('users/login', payload);
+
+      if (this.$store.getters['users/userId']) {
+        this.$router.push('/');
+      }
+
+      this.username = null;
+      this.password = null;
     },
   },
 };

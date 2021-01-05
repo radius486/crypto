@@ -3,7 +3,7 @@ import store from '../../store';
 export default async (to, from, next) => {
   try {
     await store.dispatch('users/getUserData');
-    // await store.dispatch('markets/fetchUsdMarkets');
+    await store.dispatch('markets/fetchUsdMarkets');
 
     next();
   } catch (e) {

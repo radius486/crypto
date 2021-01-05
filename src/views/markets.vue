@@ -12,13 +12,11 @@
         <div class='market-table__column'>{{ calculateTotalUsdPrice(currency) }}</div>
       </div>
     </div>
-    <pre>{{ activeUser }}</pre>
+    <!-- <pre>{{ activeUser }}</pre> -->
   </div>
 </template>
 
 <script>
-// import CurrencyPair from '@/components/currency-pair';
-// import axios from 'axios';
 
 export default {
   name: 'Markets',
@@ -59,7 +57,7 @@ export default {
     Object.assign(this.user, user);
 
     this.updateData = setInterval(() => {
-      // this.$store.dispatch('markets/fetchUsdMarkets');
+      this.$store.dispatch('markets/fetchUsdMarkets');
     }, 300000);
   },
   destroyed() {

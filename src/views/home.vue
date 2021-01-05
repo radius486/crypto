@@ -24,7 +24,6 @@
 
 <script>
 import CurrencyPair from '@/components/currency-pair';
-// import axios from 'axios';
 
 export default {
   name: 'Home',
@@ -168,7 +167,7 @@ export default {
     Object.assign(this.user, user);
 
     this.updateData = setInterval(() => {
-      // this.$store.dispatch('markets/fetchMarkets');
+      this.$store.dispatch('markets/fetchMarkets');
     }, 300000);
   },
   destroyed() {
